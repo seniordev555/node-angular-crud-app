@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-sm-12 col-md-10 col-md-offset-1">
+    <h2 class="pull-left">Meals</h2>
+    <div class="actions">
+      <a href="javascript:void(0);" class="btn btn-default" [routerLink]="['/meals/new']">Add Meal</a>
+    </div>
+    <div class="clearfix"></div>
+    <div *ngIf="meals?.length == 0" class="alert alert-warning">There is no meals.</div>
+    <br />
+    <div *ngIf="meals?.length > 0" class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>User</th>
+            <th>Text</th>
+            <th>Calories</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let meal of meals">
+            <td>{{meal.date}}</td>
+            <td>{{meal.time}}</td>
+            <td>{{meal.user.name}}</td>
+            <td>{{meal.text}}</td>
+            <td>{{meal.calories}}</td>
+            <td width="1">
+              <a href="javascript:void(0);" [routerLink]="['/meals', meal._id]" class="btn btn-info btn-sm"><i class="fa fa-pencil"></i></a>
+            </td>
+            <td width="1">
+              <a href="javascript:void(0);" class="btn btn-danger btn-sm" (click)="deleteMeal(meal)"><i class="fa fa-trash"></i></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

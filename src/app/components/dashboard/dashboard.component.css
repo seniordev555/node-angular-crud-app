@@ -1,0 +1,12 @@
+.v-middle {
+  vertical-align: middle;
+}
+
+.v-middle td {
+  vertical-align: middle;
+}
+
+.actions {
+  float: right;
+  margin: 20px 0 10px;
+}

@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <h2>Update Profile</h2>
+    <form name="profileForm" (ngSubmit)="f.form.valid && saveProfile()" #f="ngForm" novalidate>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !name.valid }">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" name="name" [(ngModel)]="user.name" #name="ngModel" required />
+        <div *ngIf="f.submitted && name.errors?.required" class="help-block">Name is required.</div>
+      </div>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" name="email" [(ngModel)]="user.email" #email="ngModel" required email />
+        <div *ngIf="f.submitted && email.errors?.email" class="help-block">Email is not valid.</div>
+      </div>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !calories_per_day.valid }">
+        <label for="caloriesPerDay">Calories(per day)</label>
+        <input type="number" class="form-control" name="caloriesPerDay" [(ngModel)]="user.caloriesPerDay" #calories_per_day="ngModel" required number [gt]="0" />
+        <div *ngIf="f.submitted && calories_per_day.errors?.required" class="help-block">Calories is required.</div>
+        <div *ngIf="f.submitted && calories_per_day.errors?.number" class="help-block">Calories should be number.</div>
+        <div *ngIf="f.submitted && calories_per_day.errors?.gt" class="help-block">Calories should be greater than 0.</div>
+      </div>
+      <div class="form-group">
+        <button [disabled]="loadingProfile" class="btn btn-primary">Update Profile</button>
+        <img *ngIf="loadingProfile" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        <a [routerLink]="['/users']" class="btn btn-link">Cancel</a>
+      </div>
+    </form>
+
+    <hr />
+
+    <h2>Update Password</h2>
+    <form name="passwordForm" (ngSubmit)="ff.form.valid && savePassword(ff)" #ff="ngForm" novalidate>
+      <div class="form-group" [ngClass]="{ 'has-error': ff.submitted && !oldPassword.valid }">
+        <label for="oldPassword">Old Password</label>
+        <input type="password" class="form-control" name="oldPassword" [(ngModel)]="pw.oldPassword" #oldPassword="ngModel" required />
+        <div *ngIf="ff.submitted && oldPassword.errors?.required" class="help-block">Old Password is required.</div>
+      </div>
+      <div class="form-group" [ngClass]="{ 'has-error': ff.submitted && !newPassword.valid }">
+        <label for="newPassword">New Password</label>
+        <input type="password" class="form-control" name="newPassword" [(ngModel)]="pw.newPassword" #newPassword="ngModel" required minlength="6" />
+        <div *ngIf="ff.submitted && newPassword.errors?.required" class="help-block">New Password is required.</div>
+        <div *ngIf="ff.submitted && newPassword.errors?.minlength" class="help-block">New Password should be greater than 5.</div>
+      </div>
+      <div class="form-group" [ngClass]="{ 'has-error': ff.submitted && !confirm_password.valid }">
+        <label for="confirm_password">Confirm Password</label>
+        <input type="password" class="form-control" name="confirm_password" [(ngModel)]="pw.confirm_password" #confirm_password="ngModel" [equalTo]="newPassword" />
+        <div *ngIf="ff.submitted && confirm_password.errors?.equalTo" class="help-block">Confirm Password did not match.</div>
+      </div>
+      <div class="form-group">
+        <button [disabled]="loadingPassword" class="btn btn-primary">Update Password</button>
+        <img *ngIf="loadingPassword" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        <a [routerLink]="['/users']" class="btn btn-link">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>

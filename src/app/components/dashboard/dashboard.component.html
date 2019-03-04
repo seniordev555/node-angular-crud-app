@@ -1,0 +1,77 @@
+<div class="row">
+  <div class="col-sm-12 col-md-10 col-md-offset-1">
+    <h2 class="pull-left">My Meals</h2>
+    <div class="actions">
+      <a href="javascript:void(0);" class="btn btn-default" [routerLink]="['/meals/new']">Add Meal</a>
+    </div>
+    <div class="clearfix"></div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Filters</h3>
+      </div>
+      <div class="panel-body">
+        <form name="form" (ngSubmit)="f.form.valid && filterMeals()" #f="ngForm" novalidate>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !(fromDate.valid && toDate.valid) }">
+                <label for="">Date (e.g. 2017-07-15)</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" name="fromDate" [(ngModel)]="mealFilters.fromDate" #fromDate="ngModel" validateDate />
+                  <span class="input-group-addon"> ~ </span>
+                  <input type="text" class="form-control" name="toDate" [(ngModel)]="mealFilters.toDate" #toDate="ngModel" validateDate />
+                </div>
+                <div *ngIf="f.submitted && !(fromDate.valid && toDate.valid)" class="help-block">Date is incorrect.</div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !(fromTime.valid && toTime.valid) }">
+                <label for="">Time (e.g. 09:05)</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" name="fromTime" [(ngModel)]="mealFilters.fromTime" #fromTime="ngModel" pattern="^(?:2[0-3]|[01][0-9]):[0-5][0-9]$" />
+                  <span class="input-group-addon"> ~ </span>
+                  <input type="text" class="form-control" name="toTime" [(ngModel)]="mealFilters.toTime" #toTime="ngModel" pattern="^(?:2[0-3]|[01][0-9]):[0-5][0-9]$" />
+                </div>
+                <div *ngIf="f.submitted && !(fromTime.valid && toTime.valid)" class="help-block">Time is incorrect.</div>
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <button class="btn btn-primary pull-right">Filter</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div *ngIf="filteredMeals?.length == 0" class="alert alert-warning">There is no meals.</div>
+    <br />
+    <div *ngIf="filteredMeals?.length > 0" class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Text</th>
+            <th>Calories</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of filteredMeals">
+            <tr class="v-middle" *ngFor="let meal of item.value; let i = index" [ngClass]="{ 'bg-success': item.total < currentUser.caloriesPerDay, 'bg-danger': item.total >= currentUser.caloriesPerDay }">
+              <td [attr.rowspan]="item.value.length" *ngIf="i == 0">{{item.key}}</td>
+              <td>{{meal.time}}</td>
+              <td>{{meal.text}}</td>
+              <td>{{meal.calories}}</td>
+              <td width="1">
+                <a href="javascript:void(0);" [routerLink]="['/meals', meal._id]" class="btn btn-info btn-sm"><i class="fa fa-pencil"></i></a>
+              </td>
+              <td width="1">
+                <a href="javascript:void(0);" class="btn btn-danger btn-sm" (click)="deleteMeal(meal)"><i class="fa fa-trash"></i></a>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
